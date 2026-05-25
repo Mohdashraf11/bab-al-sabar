@@ -1,0 +1,1 @@
+web: gunicorn bas_config.wsgi:application
