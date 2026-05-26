@@ -1,0 +1,21 @@
+{
+    "name": "Bab Al Sabarr",
+    "short_name": "BAS",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#065f46",
+    "theme_color": "#065f46",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/static/images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
