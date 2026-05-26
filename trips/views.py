@@ -103,10 +103,3 @@ def export_excel(request):
     workbook.save(response)
 
     return response
-
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser(
-        'admin',
-        'mohdashraf09458@gmail.com',
-        'admin@111'
-    )
