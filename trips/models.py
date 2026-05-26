@@ -12,6 +12,12 @@ class Trip(models.Model):
         upload_to='container_photos/',
         validators=[validate_container_photo]
     )
+    second_container_photo = models.ImageField(
+        upload_to='container_photos/',
+        validators=[validate_container_photo],
+        blank=True,
+        null=True
+    )
     er_file = models.FileField(
         upload_to='er_files/',
         validators=[validate_er_file]

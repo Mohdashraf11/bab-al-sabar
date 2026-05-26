@@ -39,6 +39,7 @@ class TripAdmin(admin.ModelAdmin):
             'Truck Number',
             'Status',
             'Container Photo',
+            'Second Container Photo',
             'ER File',
             'Created At',
         ])
@@ -50,6 +51,7 @@ class TripAdmin(admin.ModelAdmin):
                 trip.truck_number,
                 trip.status,
                 trip.container_photo.url if trip.container_photo else '',
+                trip.second_container_photo.url if trip.second_container_photo else '',
                 trip.er_file.url if trip.er_file else '',
                 trip.created_at,
             ])
@@ -76,6 +78,7 @@ class TripAdmin(admin.ModelAdmin):
             'Truck Number',
             'Status',
             'Container Photo',
+            'Second Container Photo',
             'ER File',
             'Created At',
         ]
@@ -90,6 +93,7 @@ class TripAdmin(admin.ModelAdmin):
                 trip.truck_number,
                 trip.status,
                 trip.container_photo.url if trip.container_photo else '',
+                trip.second_container_photo.url if trip.second_container_photo else '',
                 trip.er_file.url if trip.er_file else '',
                 str(trip.created_at),
             ])
