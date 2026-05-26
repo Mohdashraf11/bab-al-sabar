@@ -8,31 +8,74 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <style>
+
+        .fade-up {
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+
 </head>
 
 <body class="bg-gray-100">
 
-<div class="max-w-md mx-auto min-h-screen bg-white">
+<div class="max-w-md mx-auto min-h-screen bg-gray-50 shadow-sm">
 
     <!-- Header -->
 
-    <div class="bg-blue-950 p-6 text-white">
+    <div class="bg-gradient-to-br from-green-900 to-emerald-700 p-6 text-white">
 
         <h1 class="text-3xl font-bold">
-            Bab Al Sabar Logistics
+            Bab Al Sabarr Transport
         </h1>
 
         <p class="text-gray-300 mt-2">
             Driver Submission
         </p>
 
+        <div class="mt-6 bg-white/10 backdrop-blur-md rounded-3xl p-4 border border-white/20">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-green-100">
+                        Logistics Operations
+                    </p>
+
+                    <h2 class="text-2xl font-bold mt-1">
+                        Driver Portal
+                    </h2>
+                </div>
+
+                <div class="text-5xl">
+                    🚛
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Form -->
 
     <form method="POST"
-          enctype="multipart/form-data"
-          class="p-6 space-y-8">
+      enctype="multipart/form-data"
+      class="p-6 space-y-8 fade-up pb-40">
 
         {% csrf_token %}
 
@@ -76,7 +119,7 @@
                    name="truck_number"
                    placeholder="Enter truck registration number"
                    required
-                   class="w-full p-5 rounded-2xl border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-orange-400">
+                   class="w-full p-5 rounded-2xl border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
 
         </div>
 
@@ -95,6 +138,7 @@
                 </span>
 
                 <input type="text"
+                    autocomplete="off"
                     name="trip_id"
                     placeholder="000"
                     pattern="[0-9]+"
@@ -120,7 +164,7 @@
 
             <label class="block">
 
-                <div class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer bg-gray-50">
+                <div class="border-2 border-dashed border-emerald-300 rounded-2xl p-8 text-center cursor-pointer bg-emerald-50 shadow-sm hover:shadow-md transition">
 
                     <div class="text-5xl mb-4">
                         📷
@@ -175,7 +219,7 @@
 
             <label class="block">
 
-                <div class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer bg-gray-50">
+                <div class="border-2 border-dashed border-emerald-300 rounded-2xl p-8 text-center cursor-pointer bg-emerald-50 shadow-sm hover:shadow-md transition">
 
                     <div class="text-5xl mb-4">
                         📄
@@ -206,13 +250,12 @@
         </div>
 
         <!-- Button -->
+            <button id="submitBtn" type="submit"
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 transition text-white text-2xl font-bold py-5 rounded-2xl shadow-lg">
 
-        <button id="submitBtn" type="submit"
-                class="w-full bg-orange-500 hover:bg-orange-600 transition text-white text-2xl font-bold py-5 rounded-2xl shadow-lg">
+                Submit
 
-            Start Trip
-
-        </button>
+            </button>   
 
     </form>
 
@@ -234,7 +277,7 @@
 
         if (file) {
 
-            containerFileName.textContent = file.name;
+            containerFileName.innerHTML = "✅ Container photo selected";
 
             const reader = new FileReader();
 
@@ -261,7 +304,7 @@
 
         if (file) {
 
-            erFileName.textContent = file.name;
+            erFileName.innerHTML = "✅ ER file selected";
 
         }
     });

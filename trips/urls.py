@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import trip_form, export_excel
+from . import views
+from .views import trip_form
 
 urlpatterns = [
     path('', trip_form, name='trip_form'),
-    path('export/excel/', export_excel, name='export_excel'),
 ]
