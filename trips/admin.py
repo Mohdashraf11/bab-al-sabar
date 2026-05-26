@@ -21,6 +21,20 @@ class TripAdmin(admin.ModelAdmin):
         'created_at',
     )
 
+    search_fields = (
+        'trip_id',
+        'truck_number',
+    )
+
+    list_filter = (
+        'status',
+        'created_at',
+    )
+
+    date_hierarchy = 'created_at'
+
+    ordering = ('-created_at',)
+
     actions = ['export_as_csv', 'export_as_excel', 'export_as_pdf',]
 
 
