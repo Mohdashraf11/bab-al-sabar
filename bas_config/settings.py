@@ -161,6 +161,8 @@ STORAGES = {
 
 }
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 if not DEBUG:
 
     SESSION_COOKIE_SECURE = True
