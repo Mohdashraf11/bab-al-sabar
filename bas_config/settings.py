@@ -54,9 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
 
     'trips',
 ]
@@ -139,7 +139,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = []
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -155,18 +159,13 @@ CLOUDINARY_STORAGE = {
 }
 
 STORAGES = {
-
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
-
 }
-
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 
 if not DEBUG:
