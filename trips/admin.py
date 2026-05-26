@@ -10,6 +10,8 @@ from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.platypus.tables import TableStyle
 from reportlab.lib import colors
 
+from django.utils.html import format_html
+
 
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
@@ -18,6 +20,9 @@ class TripAdmin(admin.ModelAdmin):
         'trip_id',
         'truck_number',
         'status',
+        'container_photo_link',
+        'second_container_photo_link',
+        'er_file_link',
         'created_at',
     )
 
@@ -35,8 +40,58 @@ class TripAdmin(admin.ModelAdmin):
 
     ordering = ('-created_at',)
 
+    list_per_page = 50
+
     actions = ['export_as_csv', 'export_as_excel', 'export_as_pdf',]
 
+
+    def container_photo_link(self, obj):
+
+        if obj.container_photo:
+
+            return format_html(
+                '<a href="{}" target="_blank">View Image</a>',
+                obj.container_photo.url
+            )
+
+        return "No Image"
+
+
+    container_photo_link.short_description = (
+        "Container 1"
+    )
+
+    def second_container_photo_link(self, obj):
+
+        if obj.second_container_photo:
+
+            return format_html(
+                '<a href="{}" target="_blank">View Image</a>',
+                obj.second_container_photo.url
+            )
+
+        return "No Image"
+
+
+    second_container_photo_link.short_description = (
+        "Container 2"
+    )
+
+    def er_file_link(self, obj):
+
+        if obj.er_file:
+
+            return format_html(
+                '<a href="{}" target="_blank">View File</a>',
+                obj.er_file.url
+            )
+
+        return "No File"
+
+
+    er_file_link.short_description = (
+        "ER File"
+    )
 
     def export_as_csv(self, request, queryset):
 
@@ -147,6 +202,9 @@ class TripAdmin(admin.ModelAdmin):
             'Trip ID',
             'Truck Number',
             'Status',
+            'Container 1',
+            'Container 2',
+            'ER File',
             'Created At',
         ]]
 
@@ -156,6 +214,9 @@ class TripAdmin(admin.ModelAdmin):
                 trip.trip_id,
                 trip.truck_number,
                 trip.status,
+                trip.container_photo.url if trip.container_photo else '',
+                trip.second_container_photo.url if trip.second_container_photo else '',
+                trip.er_file.url if trip.er_file else '',
                 str(trip.created_at),
             ])
 

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
 
-    <title>Bab Al Sabar Logistics</title>
+    <title>Bab Al Sabarr</title>
 
     <link rel="icon"
       type="image/png"
@@ -140,6 +141,7 @@
 
             <input type="text"
                    name="truck_number"
+                   value="{{ request.POST.truck_number }}"
                    placeholder="Enter truck registration number"
                    required
                    class="w-full p-5 rounded-2xl border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -163,6 +165,7 @@
                 <input type="text"
                     autocomplete="off"
                     name="trip_id"
+                    value="{{ request.POST.trip_id }}"
                     placeholder="000"
                     pattern="[0-9]+"
                     inputmode="numeric"
@@ -219,7 +222,8 @@
                 class="hidden mt-4">
 
                 <img id="containerImage"
-                    class="w-full rounded-2xl border">
+                    class="w-full rounded-2xl border"
+                    alt="Container preview">
 
             </div>
 
@@ -233,7 +237,7 @@
         <div>
 
             <label class="block text-xl font-semibold mb-2">
-                Second Container Photo *
+                Second Container Photo (Optional)
             </label>
 
             <p class="text-gray-500 mb-4">
@@ -272,8 +276,9 @@
             <div id="secondContainerPreview"
                 class="hidden mt-4">
 
-                <img id="containerImage"
-                    class="w-full rounded-2xl border">
+                <img id="secondContainerImage"
+                    class="w-full rounded-2xl border"
+                    alt="Second container preview">
 
             </div>
 
@@ -334,11 +339,14 @@
 
             </button>   
 
-    </form>
-
-</div>
-
+        </form>
+        
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    
 <script>
+
+    let compressionReady = true;
 
     const containerInput = document.getElementById('containerInput');
 
@@ -348,27 +356,94 @@
 
     const containerFileName = document.getElementById('containerFileName');
 
-    containerInput.addEventListener('change', function () {
+    containerInput.addEventListener(
+        'change',
+        async function () {
 
-        const file = this.files[0];
+            const file = this.files[0];
 
-        if (file) {
+            if (file) {
 
-            containerFileName.innerHTML = "✅ Container photo selected";
+                if (file.size > 10 * 1024 * 1024) {
 
-            const reader = new FileReader();
+                    alert(
+                        'File too large. Maximum size is 10MB.'
+                    );
 
-            reader.onload = function (e) {
+                    this.value = '';
 
-                containerImage.src = e.target.result;
+                    containerFileName.innerHTML = '';
 
-                containerPreview.classList.remove('hidden');
+                    return;
+                }
 
-            };
+                compressionReady = false;
 
-            reader.readAsDataURL(file);
+                const options = {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1280,
+                    useWebWorker: true
+                };
+
+                try {
+
+                    const compressedFile =
+                        await imageCompression(
+                            file,
+                            options
+                        );
+
+                   const compressedRealFile =
+                        new File(
+                            [compressedFile],
+                            file.name,
+                            {
+                                type: compressedFile.type
+                            }
+                        );
+
+                    containerFileName.innerHTML = `✅ Container photo selected (${(file.size/1024/1024).toFixed(1)}MB)`;    
+
+                    const dataTransfer =
+                        new DataTransfer();
+
+                    dataTransfer.items.add(
+                        compressedRealFile
+                    );
+
+                    containerInput.files =
+                        dataTransfer.files;
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+
+                        containerImage.src =
+                            e.target.result;
+
+                        containerPreview.classList.remove(
+                            'hidden'
+                        );
+                    };
+
+                    reader.readAsDataURL(
+                        compressedFile
+                    );
+
+                    compressionReady = true;
+
+                } catch (error) {
+
+                    compressionReady = true;
+
+                    console.error(
+                        "Compression failed:",
+                        error
+                    );
+                }
+            }
         }
-    });
+    );
 
     const secondContainerInput =
         document.getElementById(
@@ -379,6 +454,11 @@
         document.getElementById(
             'secondContainerPreview'
         );
+    
+    const secondContainerImage =
+    document.getElementById(
+        'secondContainerImage'
+    );    
 
     const secondContainerFileName =
         document.getElementById(
@@ -387,28 +467,83 @@
 
     secondContainerInput.addEventListener(
         'change',
-        function(e) {
+        async function(e) {
 
             const file = e.target.files[0];
 
             if (file) {
 
-                secondContainerFileName.innerHTML =
-                    "✅ Second container selected";
+                if (!file.type.startsWith('image/')) {
 
-                const reader = new FileReader();
+                    alert('Please upload an image');
 
-                reader.onload = function(event) {
+                    return;
+                }
+                
+                compressionReady = false;
 
-                    secondContainerPreview.src =
-                        event.target.result;
-
-                    secondContainerPreview.classList.remove(
-                        'hidden'
-                    );
+                const options = {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1280,
+                    useWebWorker: true
                 };
 
-                reader.readAsDataURL(file);
+                try {
+
+                    const compressedFile =
+                        await imageCompression(
+                            file,
+                            options
+                        );
+
+                    const compressedRealFile =
+                        new File(
+                            [compressedFile],
+                            file.name,
+                            {
+                                type: compressedFile.type
+                            }
+                        );
+
+                    secondContainerFileName.innerHTML = `✅ Second container photo selected (${(file.size/1024/1024).toFixed(1)}MB)`;    
+
+                    const dataTransfer =
+                        new DataTransfer();
+
+                    dataTransfer.items.add(
+                            compressedRealFile
+                    );
+
+                    secondContainerInput.files =
+                        dataTransfer.files;
+
+                    const reader = new FileReader();
+
+                    reader.onload = function(event) {
+
+                        secondContainerImage.src =
+                            event.target.result;
+
+                        secondContainerPreview.classList.remove(
+                            'hidden'
+                        );
+                    };
+
+                    reader.readAsDataURL(
+                        compressedFile
+                    );
+
+                    compressionReady = true;
+
+                } catch (error) {
+
+                    compressionReady = true;
+
+                    console.error(
+                        "Compression failed:",
+                        error
+                    );
+                }
             }
         }
     );
@@ -418,13 +553,15 @@
     const erFileName = document.getElementById('erFileName');
 
     erInput.addEventListener('change', function () {
-
         const file = this.files[0];
-
         if (file) {
-
-            erFileName.innerHTML = "✅ ER file selected";
-
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File too large. Maximum size is 10MB.');
+                this.value = '';
+                erFileName.innerHTML = '';
+                return;
+            }
+            erFileName.innerHTML = `✅ ER file selected (${(file.size/1024/1024).toFixed(1)}MB)`;
         }
     });
 
@@ -433,7 +570,18 @@
 
     const submitBtn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', function () {
+    form.addEventListener('submit', function (e) {
+
+        if (!compressionReady) {
+
+            e.preventDefault();
+
+            alert(
+                'Photo is still processing. Please wait.'
+            );
+
+            return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.style.cursor = "not-allowed";
@@ -441,7 +589,7 @@
         submitBtn.innerHTML = `
             <div class="flex items-center justify-center gap-3">
                 <div class="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                Uploading...
+                Uploading ...
             </div>
         `;
 
@@ -467,6 +615,7 @@
     }
 
 </script>
+
 
 </body>
 </html>
