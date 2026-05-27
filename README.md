@@ -80,7 +80,7 @@ Operations staff see submission instantly in admin panel
 |---|---|
 | Driver Submission Form | `https://bab-al-sabar.onrender.com/` |
 | Admin Panel | `https://bab-al-sabar.onrender.com/admin/` |
-| Excel Export | `https://bab-al-sabar.onrender.com/export/excel/` |
+| Excel Export | `https://bab-al-sabar.onrender.com/admin/action/export as excel` |
 
 ---
 
@@ -342,7 +342,7 @@ Log in with the superuser credentials created during deployment.
 | View an individual submission | Click any row in the trip list |
 | Open a container photo | Click the Cloudinary URL in the trip detail view |
 | Open an ER document | Click the Cloudinary URL in the trip detail view |
-| Export all trips to Excel | Visit `/export/excel/` or use the export link |
+| Export all trips to Excel | Visit `/admin/action/export as excel` or use the export link |
 | Change a trip's status | Open the trip detail → change the Status field → Save |
 | Add a new admin user | Admin home → Users → Add User |
 
