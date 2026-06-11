@@ -13,7 +13,7 @@
 
 ## ⚠️ Important — Read Before Anything Else
 
-This is a **private, proprietary project** built exclusively for BAB AL SABARR. The source code, design, and all associated files are confidential. Do not share, redistribute, or publish any part of this system without authorisation.
+This is a **private, proprietary project** built exclusively for BAB AL SABARR. The source code, design, and all associated files are confidential. Do not share, redistribute, or publish any part of this system without authorization.
 
 ---
 
